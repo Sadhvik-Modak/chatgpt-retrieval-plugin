@@ -1,0 +1,46 @@
+version: "3.9"
+
+services:
+  redis:
+    image: redis/redis-stack-server:latest
+    ports:
+      - "6379:6379"
+    volumes:
+        - redis_data:/data
+    # Add a Docker volume bind here for your specific path where the ssd disk is attached to the host machine
+    # volumes:
+    #   - /path/on/host:/path/in/container
+    healthcheck:
+      test: ["CMD", "redis-cli", "-h", "localhost", "-p", "6379", "ping"]
+      interval: 2s
+      timeout: 1m30s
+      retries: 5
+      start_period: 5s
+
+  gpt_api:
+    build:
+      context: .
+      dockerfile: Dockerfile  
+    ports:
+      - "8089:8089"
+    environment:
+      - PORT=8089
+      - DATASTORE=redis
+      - BEARER_TOKEN=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+      - OPENAI_API_KEY=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
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=
+      - REDIS_INDEX_NAME=index
+      - REDIS_DOC_PREFIX=doc
+      - REDIS_DISTANCE_METRIC=COSINE
+      - REDIS_INDEX_TYPE=FLAT
+    # Add a Docker volume bind here for your specific path where the ssd disk is attached to the host machine
+    # volumes:
+    #   - /path/on/host:/path/in/container
+    depends_on:
+      redis:
+        condition: service_healthy
+
+volumes:
+  redis_data:
