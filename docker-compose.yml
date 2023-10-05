@@ -27,7 +27,7 @@ services:
       - PORT=8089
       - DATASTORE=redis
       - BEARER_TOKEN=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
-      - OPENAI_API_KEY=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
+      - OPENAI_API_KEY=<paste-apu-key>
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - REDIS_PASSWORD=
